@@ -2,8 +2,8 @@
   <div id="app">
     <!-- <router-view /> -->
     <section class="todoapp">
-      <Header />
-      <Todo />
+      <Header @insertTodo="insertTodo" />
+      <Todo v-bind:todos="todos" />
       <Footer />
     </section>
   </div>
@@ -21,6 +21,34 @@ export default {
     Header,
     Todo,
     Footer,
+  },
+  data() {
+    return {
+      todos: [
+        {
+          id: new Date(),
+          text: "Vue 공부하기",
+          isDone: true,
+        },
+        {
+          id: new Date() + 1,
+          text: "치킨 먹기",
+          isDone: false,
+        },
+      ],
+    };
+  },
+  methods: {
+    insertTodo(text) {
+      this.todos = [
+        ...this.todos,
+        {
+          id: new Date().getTime(),
+          text,
+          isDone: false,
+        },
+      ];
+    },
   },
 };
 </script>

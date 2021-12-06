@@ -1,16 +1,37 @@
-<template >
+<template>
   <header class="header">
-    <h1>Todos</h1>
+    <h1>todos</h1>
     <input
       class="new-todo"
       autofocus
-      autocomplate="off"
+      autocomplete="off"
       placeholder="What needs to be done?"
+      v-model="text"
+      @keypress="handleTodo"
     />
+    <!-- @ = v-on -->
   </header>
 </template>
+
 <script>
-export default {};
+export default {
+  date() {
+    return {
+      text: "",
+    };
+  },
+  methods: {
+    handleTodo({ keyCode }) {
+      const { text } = this;
+      console.log(this, keyCode);
+
+      if (keyCode === 13 && text !== "") {
+        this.$emit("insertTodo", text);
+        this.text = "";
+      }
+    },
+  },
+};
 </script>
 <style scoped>
 h1 {
