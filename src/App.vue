@@ -3,12 +3,16 @@
     <section class="todoapp">
       <Header @insertTodo="insertTodo" />
       <Todo
-        :todos="todos"
+        :todos="filteredList"
         @removeTodo="removeTodo"
         @updateDone="updateDone"
         @updateTodo="updateTodo"
       />
-      <Footer />
+      <Footer
+        :filterType="filterType"
+        :size="filteredList.length"
+        @onFilterType="handleFilterType"
+      />
     </section>
   </div>
 </template>
@@ -40,6 +44,7 @@ export default {
           isDone: false,
         },
       ],
+      filterType: "All",
     };
   },
   methods: {
@@ -74,17 +79,31 @@ export default {
         this.todos = todos;
       }
     },
+    handleFilterType(type) {
+      this.filterType = type;
+    },
+  },
+  computed: {
+    filteredList() {
+      switch (this.filterType) {
+        case "All": {
+          return this.todos;
+        }
+        case "Active": {
+          return this.todos.filter((todo) => !todo.isDone);
+        }
+        case "Completed": {
+          return this.todos.filter((todo) => todo.isDone);
+        }
+        default: {
+          return [];
+        }
+      }
+    },
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
