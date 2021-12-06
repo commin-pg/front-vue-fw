@@ -3,7 +3,11 @@
     <!-- <router-view /> -->
     <section class="todoapp">
       <Header @insertTodo="insertTodo" />
-      <Todo v-bind:todos="todos" @removeTodo="removeTodo" />
+      <Todo
+        v-bind:todos="todos"
+        @removeTodo="removeTodo"
+        @updateDone="updateDone"
+      />
       <Footer />
     </section>
   </div>
@@ -51,6 +55,15 @@ export default {
     },
     removeTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
+    },
+    updateDone(id) {
+      const todos = [...this.todos];
+      const todo = todos.find((todo) => todo.id === id);
+
+      if (todo) {
+        todo.isDone = !todo.isDone;
+        this.todos = todos;
+      }
     },
   },
 };

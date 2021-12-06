@@ -7,7 +7,12 @@
         :key="todo.id"
       >
         <div class="view">
-          <input class="toggle" type="checkbox" :checked="todo.isDone" />
+          <input
+            class="toggle"
+            type="checkbox"
+            :checked="todo.isDone"
+            @click="handleDone(todo.id)"
+          />
           <label>{{ todo.text }}</label>
           <button class="destroy" @click="handleRemove(todo.id)"></button>
         </div>
@@ -27,6 +32,10 @@ export default {
   methods: {
     handleRemove(id) {
       this.$emit("removeTodo", id);
+    },
+    handleDone(id) {
+      console.log(id);
+      this.$emit("updateDone", id);
     },
   },
 };
