@@ -2,21 +2,26 @@
   <section class="main">
     <ul class="todo-list">
       <li
-        :class="{ todo: true, completed: todo.isDone }"
-        v-for="todo in todos"
-        :key="todo.id"
+        :class="{ todo: true, completed: isDone, editing: edit.id === id }"
+        v-for="{ id, text, isDone } in todos"
+        :key="id"
       >
         <div class="view">
           <input
             class="toggle"
             type="checkbox"
-            :checked="todo.isDone"
-            @click="handleDone(todo.id)"
+            :checked="isDone"
+            @click="handleDone(id)"
           />
-          <label>{{ todo.text }}</label>
-          <button class="destroy" @click="handleRemove(todo.id)"></button>
+          <label @dblclick="handleEdit({ text, id })">{{ text }}</label>
+          <button class="destroy" @click="handleRemove(id)"></button>
         </div>
-        <input class="edit" type="text" />
+        <input
+          class="edit"
+          type="text"
+          v-model="edit.text"
+          @keypress="handleUpdate"
+        />
       </li>
     </ul>
   </section>
@@ -24,10 +29,16 @@
 <script>
 export default {
   props: {
-    todos: {
-      type: Array,
-      default: () => [],
-    },
+    todos: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      edit: {
+        // edit 데이터를 관리합니다.
+        text: "",
+        id: -1,
+      },
+    };
   },
   methods: {
     handleRemove(id) {
@@ -36,6 +47,22 @@ export default {
     handleDone(id) {
       console.log(id);
       this.$emit("updateDone", id);
+    },
+    handleEdit({ text, id }) {
+      this.edit = {
+        text,
+        id,
+      };
+    },
+    handleUpdate({ keyCode }) {
+      if (keyCode === 13) {
+        this.$emit("updateTodo", this.edit);
+        this.edit = {
+          // 추가된 후 edit state 를 리셋합니다
+          text: "",
+          id: -1,
+        };
+      }
     },
   },
 };
