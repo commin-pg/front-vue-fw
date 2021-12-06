@@ -3,13 +3,13 @@
     <ul class="todo-list">
       <li
         :class="{ todo: true, completed: todo.isDone }"
-        v-for="(todo, idx) in todos"
-        :key="idx"
+        v-for="todo in todos"
+        :key="todo.id"
       >
         <div class="view">
           <input class="toggle" type="checkbox" :checked="todo.isDone" />
           <label>{{ todo.text }}</label>
-          <button class="destroy"></button>
+          <button class="destroy" @click="handleRemove(todo.id)"></button>
         </div>
         <input class="edit" type="text" />
       </li>
@@ -22,6 +22,11 @@ export default {
     todos: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    handleRemove(id) {
+      this.$emit("removeTodo", id);
     },
   },
 };
