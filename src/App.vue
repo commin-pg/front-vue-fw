@@ -1,16 +1,28 @@
 <template>
-  <div>
-    <router-view />
+  <div id="app">
+    <!-- <router-view /> -->
+    <section class="todoapp">
+      <Header />
+      <Todo />
+      <Footer />
+    </section>
   </div>
 </template>
 
 <script>
+import "./assets/css/main.css";
+import Header from "./components/Header.vue";
+import Todo from "./components/Todo.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-  }
-}
+    Header,
+    Todo,
+    Footer,
+  },
+};
 </script>
 
 <style>
